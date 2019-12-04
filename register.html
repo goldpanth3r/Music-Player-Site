@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SignUp</title>
+
+</head>
+
+<style>
+@import "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+body{
+    margin:0;
+    padding:0;
+    font-family:sans-serif;
+    background:url(cover.jpg) no-repeat;
+    background-size:cover;
+}
+.login
+{
+    width:280px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    color:white;
+}
+.login h1{
+    float:left;
+    font-size:50px;
+    font-family:'Times New Roman', Times, serif;
+    border-bottom: 4px solid #4ca150;
+    margin-bottom: 50px;
+    padding:13px 0
+}
+.textbox
+{
+    width:100%;
+    overflow:hidden;
+    font-size:25px;
+    padding:8px 0;
+    margin:8px 0;
+    border-bottom:2px solid #228B22;
+}
+.login button{
+background:none;
+color:#228B22;
+width:80px;
+height:30px;
+margin:10px;
+border:1px solid #228B22;
+font-size:15px;
+transition: .6s;
+transform:translate(20%,40%);
+overflow:hidden;
+}
+.login a{
+    transform:translate(-20%,-20%);
+    font-size: 15px;
+}
+.login button:focus
+{
+    outline:none;
+
+}
+.login button::before
+{
+    content:'';
+    display:block;
+    position:absolute;
+    background: rgba(255,255,255,.5);
+    width:60px;
+    height:80px;
+    left:0;
+    top:0;
+    opacity:.5s;
+  filter:blur(25px);
+}
+.login button::after{
+    content:'';
+    display:block;
+    position:absolute;
+    background: rgba(255,255,255,.5);
+    width:30px;
+    height:80px;
+    left:30px;
+    top:0;
+    opacity:0;
+    filter:blur(25px);
+}
+.login button:hover
+{
+    background:#338800;
+    cursor:pointer;
+}
+.login button:hover::before{
+    opacity: .6s;
+    transition: .7s;
+}
+.login button:hover::after{
+    opacity: 1s;
+    transition: .7s;
+}
+.textbox i{
+    width:26px;
+    float:left;
+    text-align:center;
+}
+.textbox input{
+    border:none;
+    outline:none;
+    background:none;
+
+}
+
+</style>
+
+
+
+<body>
+    <div>  <!-- method="POST" action='./register'>     -->
+        <div class ="login">
+            <h1>Signup</h1>
+            <div class="textbox">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <input type="email" placeholder="EmailID" name="email" value="" id='email'>
+            </div>
+            <div class="textbox">
+                <i class="fa fa-unlock" aria-hidden="true"></i>
+                <input type="password" placeholder="password" name="pass" value="" id='pass'>
+            </div>
+            <button onclick="sendrequest();">Register</button>
+        
+        </div>
+    </div>
+
+    <script>
+            function sendrequest()
+            {
+
+                let email_value = document.getElementById('email').value;
+                let pass_value = document.getElementById('pass').value;
+                if(email_value == '' || pass_value == '')
+                {
+                    alert('Incorrect username and password');
+                }
+                else
+                {
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200)
+                        {
+                            let resp_text = this.responseText;
+                            resp_text = JSON.parse(resp_text);
+                            //document.body.innerHTML = '';                          
+                            if( resp_text['register'] =='OK')
+                            {
+                                document.open();
+                                window.location.href = "./";
+                            }
+                            //document.write(resp_text);
+                        }
+    
+                    };
+                    /*
+                    let data = new FormData();
+                    data.append('email',email_value);
+                    data.append('pass',pass_value);
+                    */
+                    let data = {
+                    email: email_value,
+                    pass: pass_value
+                    };
+                    data = JSON.stringify(data);
+                    xhttp.open("POST", "/register", true);
+                    xhttp.send(data);
+                }
+            }
+    </script>
+        
+</body>
+</html>

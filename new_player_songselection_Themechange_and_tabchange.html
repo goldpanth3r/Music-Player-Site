@@ -1,0 +1,1326 @@
+<html>
+    <head>
+            <link rel='shortcut icon' href='./icons/favicon.ico' type='image/x-icon'>
+            <link rel='icon' href='./icons/favicon.ico' type='image/x-icon'>
+            <title>Sangeeta Online Music Player</title>
+            
+    </head>
+    <body>
+
+        <div class='navigation-bar'>
+            <center>    <div class='music-logo'></div>  </center>
+            <div class='navigation-list'> <div id='home'></div>     <div class='adjust-navigation-list-text'>Home</div>      </div>     
+            <div class='navigation-list'> <div id='search'></div>   <div class='adjust-navigation-list-text'>Search</div>       </div>       
+            <div class='navigation-list'> <div id='library'></div>  <div class='adjust-navigation-list-text'>Your library</div>     </div>     
+            <div class='navigation-list'> 
+                    <div id='theme'></div>
+                    <label>Change Themes</label>      
+                    <select class='theme-change'>
+                        <optgroup label='Light Themes'>
+                            <option value='light'>Light</option>
+                            <option value='quietlight'>Quiet Light</option>
+                            <option value='solarizedlight'>Solarized Light</option>
+                        </optgroup>
+
+                        <optgroup label='Dark Themes'>
+                            <option value='abyss'>Abyss</option>
+                            <option value='dark'>Dark</option>
+                            <option value='kimbiedark'>Kimbie Dark</option>
+                            <option value='monokai'>Monokai</option>
+                            <option value='monokaidimmed'>Monokai Dimmed</option>
+                            <option value='red'>Red</option>
+                        </optgroup>
+                        <option value='colorful' selected='selected'>Colorful</option>
+                    </select>        
+            </div> 
+            <div class='navigation-list'> <div class='adjust-navigation-list-text'>LOG OUT</div>     </div>     
+
+        </div>
+
+        <div class='main-page'>
+
+            <div class='home-page'>
+
+
+                <!--
+                  <div class='song-item'>
+                      <div class='song-item-thumbnail'>  <img class='thumbnail' src='./thumbnail/arijith singh tum hi ho.jpg'>  </div>
+                      <div class='song-item-song-info'>   Tum Hi Ho        </div>   
+                      <div class='song-item-filename'>./songs/Arijith SinghTum Hi Ho Aashiqui 2.mp3</div>
+                  </div>
+ 
+                  <div class='song-item'>
+                      <div class='song-item-thumbnail'>  <img class='thumbnail' src='./thumbnail/vitas 7th element.jpg'>  </div>
+                      <div class='song-item-song-info'>   Vitas-7th element        </div>   
+                      <div class='song-item-filename'>./songs/Vitas - The 7th Element.mp3</div>
+                  </div>
+ 
+                -->
+
+            </div>      <!--  home-page    -->
+            
+            <div class='search'>    <!--  search page      -->
+
+                <div class="header">
+                    <div style="position:relative; left: 5%; font-size:40px; width:80%; margin:10px; ">
+                       Search
+                    </div>
+                    <div class="box">
+                        <input type='text' class="search-text" placeholder="Search for Music">
+                    </div>
+                </div>
+                <div class="search-content"></div>
+
+            </div> 
+
+            <div class='your-library'></div>
+
+        </div>
+
+        <div class='audio-player'>
+            <div class='labels'>
+                <div class="album-image">
+                    <img class='thumbnail' src='./thumbnail/music_null.jpg' />
+                </div>    
+                <div class='song-info-container'>
+                        <div class="song-info">Please select a song</div>  
+                        <div style=' width:100%; height:50%; display:flex; '>
+                                <div class='song-info-artists-name'></div>
+                                <div class='like-btn'>
+                                    <img class='likes' src='./icons/like.png'/>
+                                </div>
+                        </div> 
+                </div>
+            </div>
+
+            <div class='audio-control' href="javascript:;">  
+                    <!--        <div class="audio-wrapper" href="javascript:;">     -->
+                    <audio id="player" ontimeupdate="initProgressBar()"  src="">
+                            <!--  <source src="./songs/Eiffel 65 - Blue (Da Ba Dee).mp3" >    -->   <!--type="audio/mp3"-->
+                    </audio>
+
+                    <div class='player-button-controls'>    
+                        <div id='prev-btn'></div>
+                        <div id='play-btn'></div>
+                        <div id='next-btn'></div>  
+                        &emsp;
+                        <div id="down-btn">
+                            <a href="payment.html" target="_blank" ><img class="downs" src='./icons/download.png' /></a>
+                        </div>
+                        &emsp;
+                        <div id="playlist-btn">
+                            <img class="playlist" src='./icons/playlist.png'/>
+                        </div>
+                    </div>
+                    <div class="player-controls scrubber">
+                            <small style="float: left;" class="start-time"></small>   <!--   position: relative; left: 15px;  -->
+                            <span id="seekObjContainer">
+                                    <progress id="seekObj" value="0" max="1"></progress>
+                            </span>
+                            <small style="float: right;" class="end-time"></small>    <!--   position: relative; right: 20px;  -->
+                    </div>    
+
+            </div>
+
+            <div class='volume-control'>
+                    
+                <div id='volume-icon' style="background-image: url('./icons/volume-icon.png');" ></div>      <!--  style="background-image: url('./icons/volume-icon.png');"     -->
+                <progress id='volume-bar' value="0" max="1"></progress>
+                    
+            </div>
+            
+        </div>
+
+        <style>
+            .navigation-bar
+            {
+                width: 20%;
+                height: 80%;
+                background-color: darkslateblue;
+                left:0%;
+                top:0%;
+                position: fixed;
+            }
+
+            .music-logo
+            {
+                
+                background-image: url('./icons/sangeeta-logo.jpg') ;
+                background-repeat: no-repeat;
+                background-size:cover;
+                height: 20%;
+                width: 80%;
+                margin-top:5%;
+                object-fit:fill;
+                position: relative;
+            }
+
+            .navigation-list
+            {
+                text-align: center;
+                width: 90%;
+                height: 10%;
+                margin: 1%;
+                background-color: coral;
+                left: 5%;
+                top:20%;;
+                position:relative;
+            }
+
+            .adjust-navigation-list-text
+            {
+                top:25%;
+                position: relative;
+            }
+
+            .theme-change
+            {
+                background-color:darkslategray;
+                border-radius: 10px;
+                font-size: 80%;
+            }
+
+            #home
+            {
+                background-image:url('./icons/home-icon.png');
+                background-repeat: no-repeat;
+                left: 1px;
+                top: 25%;
+                height: 26px;
+                width: 26px;
+                position: absolute;
+            }
+            #search
+            {
+                background-image: url('./icons/search-icon.png');
+                background-repeat: no-repeat;
+                left: 1px;
+                top: 25%;
+                height: 26px;
+                width: 26px;
+                position: absolute;
+            }
+            #library
+            {
+                background-image: url('./icons/library-icon.png');
+                background-repeat: no-repeat;
+                left: 1px;
+                top: 25%;
+                height: 26px;
+                width: 26px;
+                position: absolute;
+            }
+
+            #theme
+            {
+                background-image: url('./icons/theme-icon.png');
+                background-repeat: no-repeat;
+                left: 1px;
+                top: 25%;
+                height: 26px;
+                width: 26px;
+                position: absolute;
+
+            }
+
+            .main-page
+            {
+                right:0%;
+                top:0%;
+                width: 80%;
+                height: 80%;
+                background-color:khaki;
+                position: fixed;
+                bottom: 20%;      
+            }
+
+
+            .home-page
+            {
+                background-color: transparent;
+                height: 100%;
+                width: 100%;
+                display:inline-block;
+                overflow-y:scroll;
+            }
+
+            .home-page::-webkit-scrollbar
+            {
+                background-color:aqua;
+                border-radius: 50px;
+            }  
+            .home-page::-webkit-scrollbar-thumb
+            {
+                background-color:blue;
+                border-radius: 50px;
+            }  
+
+
+            .search
+            {
+                background-color: transparent;
+                height: 100%;
+                width: 100%;
+                display: none;  
+                display:inline-block;
+                overflow-y:scroll;              
+            }
+            .header
+            {
+                height:150px;
+                width:100%;
+                background-position:center;
+                display:inline-block;
+                font-family:'Courier New', Courier, monospace;
+                color: cornsilk;
+                background-color:black;
+            }
+            .box
+            {
+                left:0%;
+                position: relative;
+            }
+            .header input[type="text"]
+            {
+                padding:14px 20px;
+                margin-left:5%;
+                width:60%;
+                outline:none;
+                color:black;
+                border-radius:24px;
+                font-family:cursive;
+            }
+
+            .search::-webkit-scrollbar
+            {
+                background-color:tomato;
+                border-radius: 50px;
+            }  
+
+            .search::-webkit-scrollbar-thumb
+            {
+                background-color:crimson;
+                border-radius: 50px;
+            }  
+
+
+            .your-library
+            {
+                background-color: transparent;
+                height: 100%;
+                width: 100%;
+                display: none;
+                display:inline-block;
+                overflow-y:scroll;
+            }
+
+            .your-library::-webkit-scrollbar
+            {
+                background-color:darksalmon;
+                border-radius: 50px;
+            }  
+
+            .your-library::-webkit-scrollbar-thumb
+            {
+                background-color:springgreen;
+                border-radius: 50px;
+            } 
+
+            .audio-player
+            {
+                top:80%;
+                left: 0%;
+                position:fixed;
+                display:flex;
+                background-color: yellow;
+                width: 100%;
+                height: 20%;
+            }
+
+            .labels
+            {
+                background-color: blue;
+                width:30%;
+                height:80%;
+                margin: 1%;
+                display: flex;
+            }
+
+            .album-image
+            {
+                background-color: brown;
+                width: 30%;
+                height:100%;
+            }
+            .thumbnail
+            {
+                height: 100%;
+                width: 100%;
+                object-fit: fill;
+            }
+            .song-info-container
+            {
+                width:70%;
+                display: inline-block;
+            }
+            .song-info
+            {
+                background-color: deeppink;
+                width:100%;
+                height:50%;
+                overflow-y:scroll;
+            }
+            .song-info-artists-name
+            {
+                height:100%;
+                width:80%;
+                background-color:darkred;
+                overflow-y:scroll;
+            }
+            .like-btn
+            {
+                height:100%;
+                width:20%;
+                background-size: cover;
+                background-color:crimson;
+            }
+            .likes
+            {
+                height: 100%;
+                width:100%;
+                object-fit: fill;
+            }
+            
+            .audio-control
+            {
+                background-color: chartreuse;
+                width:40%;
+                height:80%;
+                margin: 1%;
+
+            }
+
+            /*    Problem is play-pause dosen't work if player-buttons-controls is shifted to right             */
+            .player-button-controls
+            {
+                /*width: 100%;  */
+                height: auto;  
+                display: flex;    
+                padding-left: 40%;
+                padding-bottom: 5%;
+                position: relative;
+                            
+            }
+
+            /* padding in buttons increases the icon size         */
+            #prev-btn
+            {
+                background-color: white;
+                background-image: url('./icons/previous-button.png');
+                background-size: cover;
+                width: 20px;
+                height: 20px;
+                padding: 5px;
+                margin-right: 10px;
+                margin-top: 10px;
+                object-fit: fill;
+
+            }
+            #play-btn
+            {
+                background-color:white;
+                background-image: url("./icons/play-button.png"); 
+                background-size: cover;
+                padding: 5px;
+                margin-right: 10px;
+                margin-top: 10px;
+                width: 20px;
+                height: 20px;
+
+            }
+            #play-btn.pause {
+                background-image: url("./icons/pause-button.png");  
+            }
+
+            #next-btn
+            {
+                background-color: white;
+                background-image: url('./icons/next-button.png');
+                background-size: cover;
+                padding: 5px;
+                margin-right: 10px;
+                margin-top: 10px;
+                width: 20px;
+                height: 20px;
+
+            }
+
+            /*
+            #down-btn
+            {
+                background-color:white;
+                background-image: url("./icons/download.png"); 
+                background-size: cover;
+                padding: 5px;
+                margin-right: 10px;
+                margin-top: 10px;
+                width: 20px;
+                height: 20px;
+            }
+            */
+
+            #down-btn
+            {
+                height: 30px;
+                width:30px;
+                object-fit: fill;
+                margin-top:10px;
+            }
+            
+            .downs
+            {
+                height: 100%;
+                width:100%;
+                object-fit: fill; 
+            }
+
+            #playlist-btn
+            {
+                height: 30px;
+                width:30px;
+                object-fit: fill;
+                margin-top:10px;
+            }
+
+            .playlist
+            {
+                height: 100%;
+                width:100%;
+                object-fit: fill; 
+            }
+
+            .player-controls 
+            {
+                align-items: center;
+                justify-content: center;
+                height:80%;
+                position: relative;
+                /*  flex: 3;    */
+            }
+
+            .player-controls progress[value] 
+            {   
+                -webkit-appearance: none;
+                appearance: none;
+                background-color: white;
+                color: blue;
+                height: 5px;
+                left:20%;
+                position: absolute;
+            }
+
+            .player-controls progress[value]::-webkit-progress-bar 
+            {
+                background-color: white;
+                border-radius: 2px;
+                border: 1px solid #dfdfdf;
+                color: blue;
+            }
+
+            .player-controls progress::-webkit-progress-value 
+            {
+                background-color:blue;
+            }
+
+            #seekObj
+            {
+                width: 60%;
+            }
+
+            .volume-control
+            {
+                background-color:darkcyan;
+                width: 30%;
+                height:80%;
+                margin:1%;
+            }
+
+            #volume-bar
+            {
+                width: 60%;
+                height: 5px;
+                top:50%;
+                float: right;
+                position: relative; 
+                right: 20px;
+            }
+
+            #volume-icon
+            { 
+                float: left;
+                left:5%;
+                top:25%;
+                position: relative;
+                background-image: url("./icons/volume-icon.png");
+                height: 50px;
+                width: 50px;
+                object-fit: fill;
+            }
+        </style>
+
+
+        <style>
+            /*  displaying different song lists in main page       */
+            .song-item
+            {
+                width:90%;
+                height: 100px;
+                background-color: royalblue;
+                margin:auto;
+                margin-top: 10px; /*  to maintain distance between each song-item   */
+                display: flex;
+            }
+            .song-item-thumbnail
+            {
+              height:80%;
+              width:15%;
+              margin: auto;
+              background-color: yellow;
+            }
+            .song-item-song-info
+            {
+                height:80%;
+                width:80%;
+                margin:auto;
+                display: block;
+                background-color: tomato;
+            }
+            .song-item-song-name
+            {
+              width: 80%;
+              height: 50%;
+              margin: auto;   
+              text-align: center;
+              background-color:cyan;
+            }
+            .song-item-artists-name
+            {
+              width: 80%;
+              height: 50%;
+              margin: auto;  
+              text-align: center;
+              background-color:darkcyan;
+            }
+            .song-item-filename
+            {
+              display: none;
+            }
+        
+        </style>
+
+
+
+    <script>
+        function calculateTotalValue(length) {
+                    /*
+                    var minutes = Math.floor(length / 60),
+                      seconds_int = length - minutes * 60,
+                      seconds_str = seconds_int.toString(),
+                      seconds = seconds_str.substr(0, 2),
+                      time = minutes + ':' + seconds;
+        
+                      return time;
+                    */
+          var current_hour = parseInt(length / 3600) % 24,
+            current_minute = parseInt(length / 60) % 60,
+            current_seconds_long = length % 60,
+            current_seconds = current_seconds_long.toFixed(),
+            current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+        
+          return current_time;
+
+        }
+        
+        function calculateCurrentValue(currentTime) {
+          var current_hour = parseInt(currentTime / 3600) % 24,
+            current_minute = parseInt(currentTime / 60) % 60,
+            current_seconds_long = currentTime % 60,
+            current_seconds = current_seconds_long.toFixed(),
+            current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+        
+          return current_time;
+        }
+        
+        function initProgressBar() {
+          var player = document.getElementById('player');
+          var length = player.duration
+          var current_time = player.currentTime;
+        
+          // calculate total length of value
+          var totalLength = calculateTotalValue(length);
+          if(totalLength==='NaN:NaN') totalLength='0:00';         //to set initial value as 0:00 if the duration is NaN;
+          document.getElementsByClassName('end-time')[0].innerHTML=totalLength;         //jQuery(".end-time").html(totalLength);
+        
+        
+          // calculate current value time
+          var currentTime = calculateCurrentValue(current_time);
+          if(current_time<length)
+          {
+          document.getElementsByClassName('start-time')[0].innerHTML=currentTime;        //jQuery(".start-time").html(currentTime);
+          }
+        
+          var progressbar = document.getElementById('seekObj');
+          if(current_time<length)
+          {
+            progressbar.value = (player.currentTime / player.duration);
+          }
+          progressbar.addEventListener("click", seek);
+        
+          if (player.currentTime == player.duration) 
+          {
+            document.getElementById('play-btn').classList.remove('pause');                    //$('#play-btn').removeClass('pause');
+            next_btn_press();       //Go to next song after song finishes
+          }
+        
+          function seek(evt) 
+          {
+            var percent = evt.offsetX / this.offsetWidth;
+            player.currentTime = percent * player.duration;
+            progressbar.value = percent / 100;
+          }
+        };
+        
+        function initPlayers(num) {
+          // pass num in if there are multiple audio players e.g 'player' + i
+
+          for (var i = 0; i < num; i++) {
+            (function() {
+        
+              // Variables
+              // ----------------------------------------------------------
+              // audio embed object
+              var player = document.getElementById('player'),
+                isPlaying = false,
+                playBtn = document.getElementById('play-btn');
+        
+              // Controls Listeners
+              // ----------------------------------------------------------
+              if (playBtn != null) {
+                playBtn.addEventListener('click', function() {
+                  togglePlay()
+                });
+              }
+        
+              // Controls & Sounds Methods
+              // ----------------------------------------------------------
+              function togglePlay() {
+                if (player.paused === false) {
+                  player.pause();
+                  isPlaying = false;
+                  document.getElementById('play-btn').classList.remove('pause');          //$('#play-btn').removeClass('pause');
+        
+                } else {
+                  player.play();
+                  document.getElementById('play-btn').classList.add('pause');                  //$('#play-btn').addClass('pause');
+                  isPlaying = true;
+                }
+              }
+
+            }());
+          }
+        }
+        
+        initPlayers(1);    //jQuery('#player-container').length);
+        
+        //change volume on click
+        var volumebar=document.getElementById('volume-bar');
+        function volume_change(evt)
+        {
+          var player = document.getElementById('player');
+          var percent = evt.offsetX / this.offsetWidth;
+            player.volume = percent ;
+            volumebar.value = percent ;
+        
+        }
+        volumebar.addEventListener('click',volume_change);
+        volumebar.value = document.getElementById('player').volume;
+        
+        //change volume icon on click
+        var volume_icon = document.getElementById('volume-icon');
+        function volume_icon_change(evt)
+        {
+          let imgurl = volume_icon.style.backgroundImage;
+          var player = document.getElementById('player');
+          if(imgurl == 'url("./icons/volume-icon.png")')
+          {   
+             volume_icon.style.backgroundImage = 'url("./icons/mute-icon.png")';
+             player.muted = true;
+          }
+          else
+          {
+            volume_icon.style.backgroundImage = 'url("./icons/volume-icon.png")';
+            player.muted = false;
+          }
+          
+        }
+        volume_icon.addEventListener('click',volume_icon_change);
+
+        //like button events
+        var like_icon=document.getElementsByClassName('like-btn')[0];
+        function like_icon_change(evt)
+        {
+          let likes = document.getElementsByClassName('likes')[0];
+          
+          if(likes.getAttribute('src') == "./icons/like.png")
+          {   
+                likes.setAttribute('src',"./icons/unlike.png");            
+          }
+          else
+          {
+                likes.setAttribute('src',"./icons/like.png");
+          }
+          
+          
+        }//like_icon_change()
+        
+        like_icon.addEventListener('click',like_icon_change);
+
+        //to keep track of which song is selected
+        var selected_song_index = 0;
+
+        function prev_btn_press()
+        {
+            console.log('prev-btn pressed'); 
+            if(selected_song_index > 0)
+            {
+                select_songs(selected_song_index-1);
+            }
+
+        }
+        function next_btn_press()
+        {
+            console.log('next-btn pressed'); 
+            let songitem_classname = document.getElementsByClassName('song-item');
+            if(selected_song_index < songitem_classname.length - 1)
+            {
+                select_songs(selected_song_index+1);
+            }
+        }
+       
+       document.getElementById('prev-btn').addEventListener('click',function(){  prev_btn_press(); }  );
+       document.getElementById('next-btn').addEventListener('click',function(){  next_btn_press(); }  );
+
+    </script>
+
+    <script>
+      /*  response to main page  */
+
+      //change theme
+      function change_theme()
+      {
+         console.log(this.value);
+         let theme_value = this.value, navigation_list_classes , song_item_classes , song_item_song_info_classes;
+         let nav_bar,nav_list,theme_change_color,main_page_color,song_item_color,song_item_song_info_color,audio_player_color,label_color,song_info_color,song_info_artists_color,like_btn_color,audio_control_color,volume_color;
+         //we don't use different files with different styles and then change the <link> tag's href attribute because the <style> tag has higher precedence than <link> tag
+         switch(theme_value)
+         {
+                case 'light':   
+                                nav_bar = 'seashell';
+                                nav_list = 'bisque';
+                                theme_change_color = 'cornsilk';
+                                main_page_color = 'papayawhip';
+                                song_item_color = 'azure';
+                                song_item_song_info_color = 'floralwhite';
+                                audio_player_color = 'peachpuff';
+                                label_color = 'silver';
+                                song_info_color = 'whitesmoke';
+                                song_info_artists_color = 'lavender';
+                                like_btn_color = 'powderblue';
+                                audio_control_color = 'aliceblue';
+                                volume_color = 'antiquewhite';
+                                
+                                break;
+
+                case 'quietlight':   
+                                nav_bar = 'gainsboro';
+                                nav_list = 'darkgrey';
+                                theme_change_color = 'cadetblue';
+                                main_page_color = 'aliceblue';
+                                song_item_color = 'silver';
+                                song_item_song_info_color = 'snow';
+                                audio_player_color = 'lightskyblue';
+                                label_color = 'cadetblue';
+                                song_info_color = 'thistle';
+                                song_info_artists_color = 'blueviolet';
+                                like_btn_color = 'cornflowerblue';
+                                audio_control_color = 'powderblue';
+                                volume_color = 'lavender';
+                                
+                                break;
+
+
+                case 'solarizedlight':   
+                                nav_bar = 'antiquewhite';
+                                nav_list = 'lavender';
+                                theme_change_color = 'wheat';
+                                main_page_color = 'peachpuff';
+                                song_item_color = 'tan';
+                                song_item_song_info_color = 'beige';
+                                audio_player_color = 'burlywood';
+                                label_color = 'bisque';
+                                song_info_color = 'darksalmon';
+                                song_info_artists_color = 'peachpuff';
+                                like_btn_color = 'pink';
+                                audio_control_color = 'darkkhaki';
+                                volume_color = 'pink';
+                                
+                                break;
+                    
+                case 'abyss':   
+                                nav_bar = 'midnightblue';
+                                nav_list = 'cornflowerblue';
+                                theme_change_color = 'steelblue';
+                                main_page_color = 'darkblue';
+                                song_item_color = 'blue';
+                                song_item_song_info = 'darkslateblue';
+                                audio_player_color = 'darkslategray';
+                                label_color = 'mediumblue';
+                                song_info_color = 'darkcyan';
+                                song_info_artists_color = 'darkslateblue';
+                                like_btn_color = 'blue';
+                                audio_control_color = 'midnightblue';
+                                volume_color = 'blue';
+                                
+                                break;
+
+                case 'dark':   
+                                nav_bar = 'darkslategrey';
+                                nav_list = 'dimgrey';
+                                theme_change_color = 'slategrey';
+                                main_page_color = 'grey';
+                                song_item_color = 'darkgrey';
+                                song_item_song_info_color = 'lightslategrey';
+                                audio_player_color = 'slategrey';
+                                label_color = 'darkgrey';
+                                song_info_color = 'lightgrey';
+                                song_info_artists_color = 'darkgray';
+                                like_btn_color = 'dimgray';
+                                audio_control_color = 'darkslategrey';
+                                volume_color = 'dimgrey';
+                                
+                                break;
+
+                case 'kimbiedark':   
+                                nav_bar = 'saddlebrown';
+                                nav_list = 'salmon';
+                                theme_change_color = 'darkcyan';
+                                main_page_color = 'peru';
+                                song_item_color = 'cadetblue';
+                                song_item_song_info_color = 'crimson';
+                                audio_player_color = 'darkgoldenrod';
+                                label_color = 'cadetblue';
+                                song_info_color = 'darkkhaki';
+                                song_info_artists_color = 'sandybrown';
+                                like_btn_color = 'rosybrown';
+                                audio_control_color = 'tomato';
+                                volume_color = 'darkolivegreen';
+                                
+                                break;
+                        
+                case 'monokai':
+                                nav_bar = 'saddlebrown';
+                                nav_list = 'sienna';
+                                theme_change_color = 'darkolivegreen';
+                                main_page_color = 'dimgrey';
+                                song_item_color = 'darkcyan';
+                                song_item_song_info_color = 'slategrey';
+                                audio_player_color = 'black';
+                                label_color = 'darkslategrey';
+                                song_info_color = 'dimgrey';
+                                song_info_artists_color = 'darkcyan';
+                                like_btn_color = 'darkgray';
+                                audio_control_color = 'dimgrey';
+                                volume_color = 'darkslategrey';
+
+                                break;
+
+                case 'monokaidimmed':
+                                nav_bar = 'darkslategrey';
+                                nav_list = 'lightslategrey';
+                                theme_change_color = 'grey';
+                                main_page_color = 'dimgrey';
+                                song_item_color = 'blueviolet';
+                                song_item_song_info_color = 'slategrey';
+                                audio_player_color = 'cadetblue';
+                                label_color = 'darkslategrey';
+                                song_info_color = 'darkseagreen';
+                                song_info_artists_color = 'blueviolet';
+                                like_btn_color = 'slategrey';
+                                audio_control_color = 'darkgrey';
+                                volume_color = 'lightsteelblue';
+
+                                break;
+
+                case 'red':
+                                nav_bar = 'crimson';
+                                nav_list = 'orangered';
+                                theme_change_color = 'red';
+                                main_page_color = 'darkred';
+                                song_item_color = 'indianred';
+                                song_item_song_info_color = 'tomato';
+                                audio_player_color = 'firebrick';
+                                label_color = 'indianred';
+                                song_info_color = 'orangered';
+                                song_info_artists_color = 'crimson';
+                                like_btn_color = 'red';
+                                audio_control_color = 'darkred';
+                                volume_color = 'lightcoral';
+
+                                break;
+
+                case 'colorful':
+                                nav_bar = 'darkslateblue';
+                                nav_list = 'coral';
+                                theme_change_color = 'darkslategrey';
+                                main_page_color = 'khaki';
+                                song_item_color = 'royalblue';
+                                song_item_song_info_color = 'tomato';
+                                audio_player_color = 'yellow';
+                                label_color = 'blue';
+                                song_info_color = 'deeppink';
+                                song_info_artists_color = 'darkred';
+                                like_btn_color = 'crimson';
+                                audio_control_color = 'chartreuse';
+                                volume_color = 'darkcyan';
+
+                                break;
+
+         }//switch
+        document.getElementsByClassName('navigation-bar')[0].style.backgroundColor = nav_bar;
+        navigation_list_classes = document.querySelectorAll('.navigation-list');        /*    here getElementsByClassname can't be used since foreach loop can't be applied     */
+        navigation_list_classes.forEach(
+                    function(ele)
+                    {
+                        ele.style.backgroundColor = nav_list;
+                    }
+                );
+
+        document.getElementsByClassName('theme-change')[0].style.backgroundColor = theme_change_color;
+        document.getElementsByClassName('main-page')[0].style.backgroundColor = main_page_color;
+                                
+        /*                                                        
+        song_item_classes = document.querySelectorAll('.song-item');        
+        song_item_classes.forEach(
+                    function(ele)
+                    {
+                        ele.style.backgroundColor = song_item_color;
+                    }
+                );
+
+        song_item_song_info_classes = document.querySelectorAll('.song-item-song-info');        
+        song_item_song_info_classes.forEach(
+                    function(ele)
+                    {
+                        ele.style.backgroundColor = song_item_song_info_color;
+                    }
+                );
+        */
+        document.getElementsByClassName('audio-player')[0].style.backgroundColor = audio_player_color;
+        document.getElementsByClassName('labels')[0].style.backgroundColor = label_color;
+        document.getElementsByClassName('song-info')[0].style.backgroundColor = song_info_color;        
+        document.getElementsByClassName('song-info-artists-name')[0].style.backgroundColor = song_info_artists_color;
+        document.getElementsByClassName('like-btn')[0].style.backgroundColor = like_btn_color;
+        document.getElementsByClassName('audio-control')[0].style.backgroundColor = audio_control_color;
+        document.getElementsByClassName('volume-control')[0].style.backgroundColor = volume_color;
+
+        /*
+            To change the css rule for the entire class rather than a single element
+            Without this the newly added songs, would have the same color scheme as the initial one i.e. of the theme 'colorful'
+        */
+        for (let i=0; i<document.styleSheets.length; ++i) 
+        {
+            let css_Rules = document.styleSheets[i]
+            let rules = (css_Rules.cssRules || css_Rules.rules);
+            for (let j=0; j<rules.length; ++j)
+            {
+                //console.log('css_rules changing');
+                if (rules[j].selectorText === '.song-item')
+                {
+                    rules[j].style.backgroundColor = song_item_color;
+                }
+                if (rules[j].selectorText === '.song-item-song-info')
+                {
+                    rules[j].style.backgroundColor = song_item_song_info_color;
+                }
+
+            }//for(j=0...)
+        }//for(i=0...)
+
+      }//change_theme()
+
+      document.getElementsByClassName('theme-change')[0].addEventListener('change', change_theme );
+
+      //changing-tabs
+      let home_page_tab = document.getElementsByClassName('home-page')[0];
+      let search_tab = document.getElementsByClassName('search')[0];
+      let your_library_tab = document.getElementsByClassName('your-library')[0];
+
+      function change_tab(tab)
+      {
+            switch(tab)
+            {
+                case 'home-page':   
+                                    home_page_tab.style.display = 'inline-block';
+                                    search_tab.style.display = 'none';
+                                    your_library_tab.style.display = 'none';
+                                    break;
+                case 'search':
+                                    home_page_tab.style.display = 'none';
+                                    search_tab.style.display = 'inline-block';
+                                    your_library_tab.style.display = 'none';
+                                    break;
+                case 'your-library':
+                                    home_page_tab.style.display = 'none';
+                                    search_tab.style.display = 'none';
+                                    your_library_tab.style.display = 'inline-block';
+                                    break;
+
+            }
+      }//change_tab(tab)
+
+      document.getElementsByClassName('navigation-list')[0].addEventListener('click',function() { change_tab('home-page');  } );
+      document.getElementsByClassName('navigation-list')[1].addEventListener('click', function() {  change_tab('search');   }  );
+      document.getElementsByClassName('navigation-list')[2].addEventListener('click',  function() {  change_tab('your-library');  } );
+      document.getElementsByClassName('navigation-list')[4].addEventListener('click',  function() {  window.location.href='./';  } );
+
+
+      /*
+        SCRIPTS RELATING SONGS, REQUEST AND RESPONSE
+      */
+
+      //loading more songs
+
+      function select_songs(index)
+      {
+
+          console.log('select_songs:', index);
+          selected_song_index = index;
+
+          let song_item_thumbnail = document.getElementsByClassName('song-item-thumbnail')[index].getElementsByClassName('thumbnail')[0].getAttribute('src');
+          let song_item_song_info = document.getElementsByClassName('song-item-song-name')[index].innerHTML;
+          let song_item_artists_name = document.getElementsByClassName('song-item-artists-name')[index].innerHTML;
+          let song_item_filename = document.getElementsByClassName('song-item-filename')[index].innerHTML;
+          //console.log(song_item_filename); 
+          //set thumbnail in audio player
+          document.getElementsByClassName('album-image')[0].getElementsByClassName('thumbnail')[0].setAttribute('src',song_item_thumbnail);
+          //set song-info
+          document.getElementsByClassName('song-info')[0].innerHTML = song_item_song_info;          
+          //set song-info-artists-name
+          document.getElementsByClassName('song-info-artists-name')[0].innerHTML = song_item_artists_name;
+          //change audio file
+          let audio_player = document.getElementById('player');
+          audio_player.pause();
+          audio_player.setAttribute('src', song_item_filename );
+          audio_player.play();
+          //from togglePlay()
+          document.getElementById('play-btn').classList.add('pause');
+          isPlaying=true;     //just to maintain values as in togglePlay()
+
+      };
+ 
+      function load_songs_initially()
+      {
+        console.log( 'load songs');
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                // Typical action to be performed when the document is ready:
+                let jsondata = JSON.parse(this.responseText);
+                let song_entity,content='';
+                
+                for(song_entity in jsondata)
+                {
+                    content+= "<div class='song-item'> <div class='song-item-thumbnail'>  <img class='thumbnail' src=' ";
+                    content+= jsondata[song_entity].song_thumbnail;
+                    content+= "'>  </div> <div class='song-item-song-info'> <div class='song-item-song-name'>";
+                    content+= jsondata[song_entity].song_name;
+                    content+= "</div> <div class='song-item-artists-name'>";
+                    content+= jsondata[song_entity].artists_name;
+                    content+= "</div> </div> <div class='song-item-filename'> ";
+                    content+= jsondata[song_entity].song_filename;
+                    content+= "</div>  </div>";                   
+                }
+                document.getElementsByClassName("home-page")[0].innerHTML += content ;
+
+                //set the action_listener again i.e. we are setting the actionlistener for newly added classes also
+                let songitem_classname = document.getElementsByClassName('song-item');
+                for (let i = 0; i < songitem_classname.length; i++) 
+                {
+                    songitem_classname[i].addEventListener('click', function() { select_songs(i); } );
+                }
+                
+            }
+        };
+
+        xhttp.open("GET", "/load_home_page", true);
+        xhttp.send();
+      }
+      load_songs_initially();
+      
+      let home_page_scroll = document.getElementsByClassName('home-page')[0];
+
+      home_page_scroll.addEventListener('scroll',function(){
+            
+            if(home_page_scroll.scrollTop + home_page_scroll.clientHeight >= home_page_scroll.scrollHeight) 
+            {
+                load_songs_initially();
+            }
+            
+      });
+      
+      //searching songs
+      let search_text = document.getElementsByClassName('search-text')[0];
+
+      function search_songs()
+      {
+        console.log('search songs');
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200)
+            {
+
+                
+                // Typical action to be performed when the document is ready:
+                let jsondata = JSON.parse(this.responseText);
+                let song_entity,content='';
+                
+                for(song_entity in jsondata)
+                {
+                    content+= "<div class='song-item'> <div class='song-item-thumbnail'>  <img class='thumbnail' src=' ";
+                    content+= jsondata[song_entity].song_thumbnail;
+                    content+= "'>  </div> <div class='song-item-song-info'> <div class='song-item-song-name'>";
+                    content+= jsondata[song_entity].song_name;
+                    content+= "</div> <div class='song-item-artists-name'>";
+                    content+= jsondata[song_entity].artists_name;
+                    content+= "</div> </div> <div class='song-item-filename'> ";
+                    content+= jsondata[song_entity].song_filename;
+                    content+= "</div>  </div>";                   
+                }
+                document.getElementsByClassName("search-content")[0].innerHTML = content ;
+
+                //set the action_listener again i.e. we are setting the actionlistener for newly added classes also
+                let songitem_classname = document.getElementsByClassName('song-item');
+                for (let i = 0; i < songitem_classname.length; i++) 
+                {
+                    songitem_classname[i].addEventListener('click', function() { select_songs(i); } );
+                }
+                
+            }
+        };
+
+        
+        let data = {
+            search_text : search_text.value 
+        };
+        data = JSON.stringify(data);
+        xhttp.open("POST", "/search_songs", true);
+        xhttp.send( data );
+      }//search songs
+
+      search_text.addEventListener('change', search_songs );
+
+
+      //DOWNLOAD SONGS
+      function downloadsongs()
+      {
+        console.log('download songs');
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200)
+            {
+                console.log('Song to be downloaded sent');
+            }
+        };
+
+        let song_to_download = document.getElementsByClassName('song-info')[0].innerHTML;
+        console.log( song_to_download );
+        if(song_to_download == 'Please select a song' )
+        {
+            alert('Please select a song');
+        }
+        else
+        {
+
+            let data = {
+                download_song : song_to_download 
+            };
+            data = JSON.stringify(data);
+            xhttp.open("POST", "/download_songs", true);
+            xhttp.send( data );   
+
+        }//else
+
+      }//downloadsongs()
+
+      document.getElementById('down-btn').addEventListener('click',downloadsongs);
+
+    
+      // Adding songs to playlist
+
+      function add_playlist()
+      {
+        console.log('Adding songs to playlist');
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200)
+            {
+
+                
+                // Typical action to be performed when the document is ready:
+                let jsondata = JSON.parse(this.responseText);
+                let song_entity,content='';
+                
+                for(song_entity in jsondata)
+                {
+                    content+= "<div class='song-item'> <div class='song-item-thumbnail'>  <img class='thumbnail' src=' ";
+                    content+= jsondata[song_entity].song_thumbnail;
+                    content+= "'>  </div> <div class='song-item-song-info'> <div class='song-item-song-name'>";
+                    content+= jsondata[song_entity].song_name;
+                    content+= "</div> <div class='song-item-artists-name'>";
+                    content+= jsondata[song_entity].artists_name;
+                    content+= "</div> </div> <div class='song-item-filename'> ";
+                    content+= jsondata[song_entity].song_filename;
+                    content+= "</div>  </div>";                   
+                }
+                document.getElementsByClassName("your-library")[0].innerHTML += content ;
+
+                //set the action_listener again i.e. we are setting the actionlistener for newly added classes also
+               let songitem_classname = document.getElementsByClassName('song-item');
+                for (let i = 0; i < songitem_classname.length; i++) 
+                {
+                    songitem_classname[i].addEventListener('click', function() { select_songs(i); } );
+                }
+                
+            }
+        };
+
+        let song_info=document.getElementsByClassName('song-info')[0].innerHTML
+        console.log(song_info.innerHTML);
+        let data = {
+            song_name : song_info
+        };
+        data = JSON.stringify(data);
+        xhttp.open("POST", "/add_playlist", true);
+        xhttp.send( data );
+        
+    }
+    document.getElementById('playlist-btn').addEventListener('click',function(){  add_playlist(); })
+    
+
+    </script>
+
+
+    </body>
+
+</html>

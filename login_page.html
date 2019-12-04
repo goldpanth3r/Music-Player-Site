@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Log In</title>
+</head>
+
+<style>
+@import "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+body{
+    margin:0;
+    padding:0;
+    font-family:sans-serif;
+    background:url(cover.jpg) no-repeat;
+    background-size:cover;
+}
+.login
+{
+    width:280px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+    color:white;
+}
+.login h1{
+    float:left;
+    font-size:50px;
+    font-family:'Times New Roman', Times, serif;
+    border-bottom: 4px solid #4ca150;
+    margin-bottom: 50px;
+    padding:13px 0
+}
+.textbox
+{
+    width:100%;
+    overflow:hidden;
+    font-size:25px;
+    padding:8px 0;
+    margin:8px 0;
+    border-bottom:2px solid #228B22;
+}
+#email
+{
+    width: 90%;
+    height: 2em;
+}
+.form-buttons
+{
+    background:none;
+    color:#228B22;
+    width:80px;
+    height:30px;
+    margin:10px;
+    border:1px solid #228B22;
+    font-size:15px;
+    transition: .6s;
+    transform:translate(20%,40%);
+    overflow:hidden;
+}
+.login a{
+    transform:translate(-20%,-20%);
+    font-size: 15px;
+}
+.form-buttons:focus
+{
+    outline:none;
+
+}
+.form-buttons::before
+{
+    content:'';
+    display:block;
+    position:absolute;
+    background: rgba(255,255,255,.5);
+    width:60px;
+    height:80px;
+    left:0;
+    top:0;
+    opacity:.5s;
+    filter:blur(25px);
+}
+.form-buttons::after{
+    content:'';
+    display:block;
+    position:absolute;
+    background: rgba(255,255,255,.5);
+    width:30px;
+    height:80px;
+    left:30px;
+    top:0;
+    opacity:0;
+    filter:blur(25px);
+}
+.form-buttons:hover
+{
+    background:#338800;
+    cursor:pointer;
+}
+.form-buttons:hover::before{
+    opacity: .6s;
+    transition: .7s;
+}
+.form-buttons:hover::after{
+    opacity: 1s;
+    transition: .7s;
+}
+.textbox i{
+    width:26px;
+    float:left;
+    text-align:center;
+}
+.textbox input{
+    border:none;
+    outline:none;
+    background:none;
+
+}
+
+#validation-message
+{
+  width: 100%;
+  display: inline-block;
+  background-color:dimgray;
+  color:bisque;
+  border-radius: 5px;
+}
+.alert
+{
+    padding: 10px;
+}
+.close
+{
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    font-size: 100%;
+    border-color: transparent;
+}
+
+</style>
+
+
+
+<body>
+    <div> <!-- method="POST" action='./login'> -->
+        <div class ="login">
+            <h1>Log In</h1>
+            <!--  Alert message  -->
+            <div id="validation-message"> </div>
+
+            <div class="textbox">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <input type="email" placeholder="EmailID" name="email" value="" id='email'>
+            </div>
+            <div class="textbox">
+                <i class="fa fa-unlock" aria-hidden="true"></i>
+                <input type="password" placeholder="password" name="pass" value="" id='pass'>
+            </div>
+            <button onclick="sendrequest();" class="form-buttons">Log In</button>
+            <button onclick="sendregister();" class="form-buttons">Register</button>
+        
+        </div>
+    </div>
+
+    <script>
+        function sendrequest()
+        {
+            
+            console.log('login button pressed');
+
+            let email_value = document.getElementById('email').value;
+            let pass_value = document.getElementById('pass').value;
+            console.log(email_value)
+            console.log(pass_value)
+            if(email_value == '' || pass_value == '')
+            {
+                alert('Please enter username and password');
+            }
+            else
+            {
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200)
+                    {
+                        let resp_text = this.responseText;
+                        resp_text = JSON.parse(resp_text);
+                        console.log(resp_text);
+                        
+                        if( resp_text['login'] =='OK')
+                        {
+                            document.open();
+                            window.location.href = "new_player_songselection_Themechange_and_tabchange.html";
+                        }
+                        else if( resp_text['error'] )
+                        {
+                            //alert( resp_text['error'] );
+                            let message = "<div class='alert'><strong>" + resp_text['error'] + "</strong><button class='close' onclick='disappear()'>&times;</button></div>";
+                            document.getElementById('validation-message').innerHTML = message;
+                        }
+                        //document.write(resp_text);
+                    }
+
+                };
+        
+                /*
+                let data = new FormData();
+                data.append('email',email_value);
+                data.append('pass',pass_value);
+                */
+                let data = {
+                    email: email_value,
+                    pass: pass_value
+                };
+                data = JSON.stringify(data);
+                xhttp.open("POST", "/login", true);
+                xhttp.send(data);
+            }//else
+
+        }
+        function sendregister()
+        {
+            console.log('register button pressed');
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    let resp_text = this.responseText;
+                    //document.body.innerHTML = '';
+                    document.open();
+                    document.write(resp_text);
+                }
+
+            };
+            xhttp.open("POST", "/sendregister", true);
+            xhttp.send();
+        }
+
+        function disappear()
+        {
+            document.getElementById('validation-message').innerHTML = '';
+        } 
+    </script>
+        
+</body>
+</html>
